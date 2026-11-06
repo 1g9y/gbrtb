@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-# --- VITASDK DETECTION ---
 if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   if(DEFINED ENV{VITASDK})
     set(CMAKE_TOOLCHAIN_FILE "$ENV{VITASDK}/share/vita.toolchain.cmake" CACHE PATH "toolchain file")
@@ -19,17 +18,18 @@ set(VITA_VERSION  "01.00")
 
 add_executable(GleepRemote main.c)
 
-# Link libraries in the correct order. vita2d goes last because it depends on the others.
+# Link libraries. The order is critical: vita2d depends on the system stubs,
+# and the math library (m) must be last to resolve cosf/sinf.
 target_link_libraries(GleepRemote
     SceCtrl_stub
     SceNet_stub
     SceNetCtl_stub
     SceSysmodule_stub
-    SceLibKernel_stub
     SceGxm_stub
     SceDisplay_stub
     ScePgf_stub
     vita2d
+    m
 )
 
 vita_create_self(GleepRemote.self GleepRemote UNSAFE)
