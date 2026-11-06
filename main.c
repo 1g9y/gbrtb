@@ -3,20 +3,18 @@
 #include <psp2/net/net.h>
 #include <psp2/net/netctl.h>
 #include <psp2/sysmodule.h>
-#include <psp2/io/fcntl.h>
 #include <vita2d.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
 // --- CONFIGURATION ---
-// Change this to your PC's local IP address
+// CHANGE THIS to your PC's IPv4 address (e.g., "192.168.1.50")
 const char *GLEEP_PC_IP = "192.168.1.100"; 
 const int GLEEP_PORT = 8080;
 // ---------------------
 
 vita2d_pgf *font;
-vita2d_texture *background, *screen_bg;
 
 // Simple HTTP GET function using basic sockets
 void send_command(const char *command) {
