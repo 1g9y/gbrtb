@@ -18,18 +18,26 @@ set(VITA_VERSION  "01.00")
 
 add_executable(GleepRemote main.c)
 
-# Force the exact linker flags in the correct order.
-# Stubs first, then vita2d, then math.
-target_link_options(GleepRemote PRIVATE
-    -lSceCtrl_stub
-    -lSceNet_stub
-    -lSceNetCtl_stub
-    -lSceSysmodule_stub
-    -lSceGxm_stub
-    -lSceDisplay_stub
-    -lScePgf_stub
-    -lvita2d
-    -lm
+# This specific order and syntax is required by the VitaSDK Docker container.
+target_link_libraries(GleepRemote
+    SceCtrl_stub
+    SceNet_stub
+    SceNetCtl_stub
+    SceSysmodule_stub
+    SceDisplay_stub
+    SceGxm_stub
+    ScePgf_stub
+    vita2d
+    SceKernelThreadMgr
+    SceKernelModulemgr
+    SceAppMgr_stub
+    SceCommonDialog_stub
+    SceLibKernel_stub
+    SceIofilemgr_stub
+    SceSysmem_stub
+    SceThreadmgr_stub
+    SceProcessmgr_stub
+    m
 )
 
 vita_create_self(GleepRemote.self GleepRemote UNSAFE)
