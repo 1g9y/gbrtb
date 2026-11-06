@@ -18,7 +18,8 @@ set(VITA_VERSION  "01.00")
 
 add_executable(GleepRemote main.c)
 
-# This specific order and syntax is required by the VitaSDK Docker container.
+# Minimal set of libraries required for a vita2d + networking app.
+# Order: stubs first, then vita2d, then math.
 target_link_libraries(GleepRemote
     SceCtrl_stub
     SceNet_stub
@@ -27,16 +28,8 @@ target_link_libraries(GleepRemote
     SceDisplay_stub
     SceGxm_stub
     ScePgf_stub
-    vita2d
-    SceKernelThreadMgr
-    SceKernelModulemgr
-    SceAppMgr_stub
-    SceCommonDialog_stub
     SceLibKernel_stub
-    SceIofilemgr_stub
-    SceSysmem_stub
-    SceThreadmgr_stub
-    SceProcessmgr_stub
+    vita2d
     m
 )
 
