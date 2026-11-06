@@ -18,22 +18,19 @@ set(VITA_VERSION  "01.00")
 
 add_executable(GleepRemote main.c)
 
-# 1. Link the system stubs FIRST.
-target_link_libraries(GleepRemote
-    SceCtrl_stub
-    SceNet_stub
-    SceNetCtl_stub
-    SceSysmodule_stub
-    SceGxm_stub
-    SceDisplay_stub
-    ScePgf_stub
+# Force the exact linker flags in the correct order.
+# Stubs first, then vita2d, then math.
+target_link_options(GleepRemote PRIVATE
+    -lSceCtrl_stub
+    -lSceNet_stub
+    -lSceNetCtl_stub
+    -lSceSysmodule_stub
+    -lSceGxm_stub
+    -lSceDisplay_stub
+    -lScePgf_stub
+    -lvita2d
+    -lm
 )
-
-# 2. Link vita2d AFTER the stubs.
-target_link_libraries(GleepRemote vita2d)
-
-# 3. Link math LAST.
-target_link_libraries(GleepRemote -lm)
 
 vita_create_self(GleepRemote.self GleepRemote UNSAFE)
 
