@@ -18,8 +18,7 @@ set(VITA_VERSION  "01.00")
 
 add_executable(GleepRemote main.c)
 
-# Link libraries. The order is critical: vita2d depends on the system stubs,
-# and the math library (m) must be last to resolve cosf/sinf.
+# System stubs first
 target_link_libraries(GleepRemote
     SceCtrl_stub
     SceNet_stub
@@ -28,9 +27,13 @@ target_link_libraries(GleepRemote
     SceGxm_stub
     SceDisplay_stub
     ScePgf_stub
-    vita2d
-    m
 )
+
+# vita2d after the stubs it depends on
+target_link_libraries(GleepRemote vita2d)
+
+# Math library LAST, as a linker flag so it ends up at the very end of the link line
+target_link_libraries(GleepRemote -lm)
 
 vita_create_self(GleepRemote.self GleepRemote UNSAFE)
 
